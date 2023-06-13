@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title style="color: #591727;">KBNG Magazine</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #000000;
+      background-position: left top;
+      background-repeat: repeat;
+      background-image: url(https://i.pinimg.com/originals/71/83/69/7183693b4253a140ca4da348c164a8f0.jpg);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.93);
+      /* Modified background color with alpha */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: #f7ead9;
+      /* Text color for the container */
+    }
+
+    .container p {
+      color: #f7ead9;
+      /* Text color for paragraphs within the container */
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 25px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .image {
+      display: block;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .caption {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    .credits {
+      font-size: 12px;
+      color: #999;
+      text-align: right;
+    }
+
+    /* Custom Styles */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .menubar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .menubutton {
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 5px;
+    }
+
+    .menubutton:hover {
+      background-color: #ccc;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      color: #FF3366;
+      margin: 0;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      color: #961821;
+    }
+
+    .section p {
+      font-size: 18px;
+    }
+
+    .section .image {
+      margin-top: 30px;
+    }
+
+    .section .caption {
+      margin-top: 10px;
+    }
+
+    .section .credits {
+      margin-top: 5px;
+    }
+
+    .ads {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .ads .ad {
+      width: 230px;
+      height: 315px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .ads .ad img {
+      max-width: 120%;
+      height: auto;
+    }
+
+    .ads .ad.video-ad {
+      width: 560px;
+    }
+
+    .ads .video-container {
+      width: 560px;
+      height: 315px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .ads .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .ads .ad.clicked video {
+      display: block;
+    }
+
+    .see-more-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    .see-more-button button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #FF3366;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #999;
+    }
+
+    .footer p {
+      font-size: 14px;
+    }
+
+        .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      padding-top: 20px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+    /* Add new styles for the modal */
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Add new JavaScript for the modal functionality */
+    document.addEventListener("DOMContentLoaded", function () {
+      var ads = document.querySelectorAll(".ads .ad");
+      var modal = document.getElementById("modal");
+      var modalContent = document.getElementById("modal-content");
+
+      ads.forEach(function (ad) {
+        ad.addEventListener("click", function () {
+          if (ad.classList.contains("clicked")) {
+            ad.classList.remove("clicked");
+          } else {
+            var clickedAds = document.querySelectorAll(".ads .ad.clicked");
+            clickedAds.forEach(function (clickedAd) {
+              clickedAd.classList.remove("clicked");
+            });
+
+            ad.classList.add("clicked");
+
+            // Get the clicked image source
+            var imageSrc = ad.querySelector("img").src;
+            // Set the image source in the modal content
+            modalContent.innerHTML = '<img src="' + imageSrc + '" alt="Fullsize Image">';
+            // Show the modal
+            modal.style.display = "block";
+          }
+        });
+      });
+
+      // Close the modal when the user clicks outside the modal content
+      modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="modal" class="modal">
+    <div id="modal-content" class="modal-content"></div>
+  </div>
+
+  <div class="container">
+
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var ads = document.querySelectorAll(".ads .ad");
+
+      ads.forEach(function (ad) {
+        ad.addEventListener("click", function () {
+          if (ad.classList.contains("clicked")) {
+            ad.classList.remove("clicked");
+          } else {
+            var clickedAds = document.querySelectorAll(".ads .ad.clicked");
+            clickedAds.forEach(function (clickedAd) {
+              clickedAd.classList.remove("clicked");
+            });
+
+            ad.classList.add("clicked");
+          }
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="menubar">
+        <div class="menubutton" style="background-color: white;"></div>
+      </div>
+      <h1><object class="svg-container" data="logoblanco.svg" type="image/svg+xml"></object></h1>
+      <div></div>
+    </div>
+
+    <div class="section">
+      <h2>KBNG, Merline the Stylist who Made a Fake Neo2 Magazine Article</h2>
+      <p>Meet KBNG, the innovative and boundary-pushing stylist who recently made waves in the fashion industry with a fake Neo 2 magazine article. Through her artistic vision and collaboration with Chat GPT, she crafted a thought-provoking fashion editorial that challenges conventional norms and celebrates individuality.</p>
+      <div class="image">
+        <img src="Merline-6 copy.jpg" alt="Image 1">
+        <div class="caption">Photographer: Borja Pascual | Stylist: Merline Luendu</div>
+      </div>
+      <p>KBNG's work is characterized by bold colors, unconventional silhouettes, and a fearless approach to styling. In her Neo 2 magazine-inspired article, she pushes the boundaries of fashion by blending different styles and genres, creating unique and captivating looks that defy expectations.</p>
+      <div class="image">
+        <img src="imagen2.jpg" alt="Image 2">
+        <div class="caption">Photographer: Borja Pascual | Stylist: Merline Luendu</div>
+      </div>
+      <p>With her keen eye for detail and a knack for storytelling, KBNG transforms fashion into a powerful form of self-expression. Each ensemble in the article tells a story, challenging societal norms and inspiring readers to embrace their individuality.</p>
+      <div class="image">
+        <img src="Merline-7 copy.jpg" alt="Image 3">
+        <div class="caption">Photographer: Borja Pascual | Stylist: Merline Luendu</div>
+      </div>
+      <p>KBNG's work is a testament to the transformative power of fashion. By blurring the lines between art and fashion, she creates a captivating visual narrative that captivates and challenges the viewer.</p>
+      <div class="image">
+        <img src="Merline-25 copy.jpg" alt="Image 4">
+        <div class="caption">Photographer: Borja Pascual | Stylist: Merline Luendu</div>
+      </div>
+      <p>Through her collaboration with Chat GPT, KBNG pushes the boundaries of creativity, using technology as a tool to amplify her artistic vision. The result is a fashion editorial that captures the essence of youth and celebrates the power of self-expression.</p>
+      <div class="image">
+        <img src="Merline-23 copy.jpg" alt="Image 5">
+        <div class="caption">Photographer: Borja Pascual | Stylist: Merline Luendu</div>
+      </div>
+      <p>KBNG's innovative approach to styling and her collaboration with Chat GPT have solidified her position as a trailblazer in the fashion industry. Her ability to create visually striking and thought-provoking editorials pushes the boundaries of what is possible in fashion.</p>
+    </div>
+
+    <div class="ads">
+      <div class="ad ad-left">
+        <img src="Merline-11 copy.jpg" alt="Ad 1">
+      </div>
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/yvw2Ie0zz3w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="ad ad-right">
+        <img src="Merline-12 copy.jpg" alt="Ad 2">
+      </div>
+    </div>
+
+    <div class="see-more-button">
+      <a href="gallery.html" target="_blank"><button>See more</button></a>
+    </div>
+
+    <div class="footer">
+      <p>© 2023 KBNG Magazine. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+
+</html>
